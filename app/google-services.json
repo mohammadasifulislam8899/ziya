@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1056521026903",
+    "project_id": "ziya---light-of-islam",
+    "storage_bucket": "ziya---light-of-islam.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056521026903:android:2b50aac084da64974d5212",
+        "android_client_info": {
+          "package_name": "com.droidnest.tech.ziya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt6iYvxH3maYwXcr0bAymwXunNtjRgkuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

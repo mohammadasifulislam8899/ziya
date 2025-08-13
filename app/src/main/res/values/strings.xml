@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">Ziya - Light of Islam</string>
+    <string name="no_data_found">ডেটা পাওয়া যায়নি , দয়া করে অ্যাপ আপডেট করুন অথবা অন্য জেলা সিলেক্ট করুন </string>
+    <string name="today_hadith">আজকের ৩টি হাদীস :</string>
+    <string name="refresh_hadith">Refresh Hadith</string>
+    <string name="reference">রেফারেন্স</string>
+    <string name="tasbih">Tasbih</string>
+    <string name="remember_allah">Remember Allah</string>
+    <string name="start_tasbih_counter">Start Tasbih Counter</string>
+    <string name="get_start_now">Get Start Now</string>
+    <string name="namaz_time_background">Namaz time Background</string>
+    <string name="namaz_time">নামাজের সময়</string>
+    <string name="select_zella">📍 আপনার জেলা নির্বাচন করুন</string>
+    <string name="select_zela">Select Zela</string>
+    <string name="ishaandtahjjud">ইশা ও তাহাজ্জুদ</string>
+    <string name="fajr">ফজর</string>
+    <string name="salatud_duha">সালাতুদ দুহা</string>
+    <string name="duhur">যোহর</string>
+    <string name="asr">আসর</string>
+    <string name="magrib">মাগরিব</string>
+    <string name="_02d_02d_02d">%02d:%02d:%02d</string>
+
+    <!-- Welcome Screen Strings -->
+    <string name="welcome_greeting">Welcome to Your Journey</string>
+    <string name="app_logo_description">App Logo</string>
+    <string name="app_description">Your personal companion for daily spiritual practices. Discover prayers, meditation, wisdom, and guidance in a beautiful, intuitive interface. Strengthen your faith and enhance your daily worship experience.</string>
+    <string name="your_name">আপনার নাম</string>
+    <string name="enter_your_name">আপনার নাম লিখুন</string>
+    <string name="select_location">আপনার জেলা সিলেক্ট করুন</string>
+    <string name="begin_journey">ইবাদতের পথে যাত্রা শুরু করি</string>
+    <string name="inspirational_quote">"The journey of a thousand miles begins with one step"</string>
+    <string name="developed_by">Developed with ❤️ by</string>
+
+    <!-- Developer Screen Strings -->
+    <string name="developer_info">Developer Profile</string>
+    <string name="get_in_touch">Get in Touch</string>
+    <string name="expertise">Expertise</string>
+
+    <!-- Contact Labels -->
+    <string name="email_label">Email</string>
+    <string name="website_label">Website</string>
+    <string name="location_label">Location</string>
+    <string name="phone_label">Phone</string>
+
+    <!-- Stats Labels -->
+    <string name="years_experience">Years Experience</string>
+    <string name="projects_completed">Projects</string>
+    <string name="app_downloads">App Downloads</string>
+    <string name="happy_clients">Happy Clients</string>
+
+    <!-- Developer Info -->
+    <string name="developer_name">Mohammad Asiful Islam</string>
+    <string name="developer_title">Chief Executive Officer</string>
+    <string name="company_name">DroidNest Tech</string>
+    <string name="developer_description">Android Developer • Tech Enthusiast • Problem Solver</string>
+    <string name="developer_location">Chittagong, Bangladesh</string>
+    <string name="developer_email">droidnesttech@gmail.com</string>
+    <string name="developer_website">www.droidnest.tech</string>
+
+    <!-- Skills -->
+    <string name="skill_android">Android Development</string>
+    <string name="skill_kotlin">Kotlin &amp; Java</string>
+    <string name="skill_compose">Jetpack Compose</string>
+    <string name="skill_backend">Firebase &amp; Backend</string>
+    <string name="skill_ui_ux">UI/UX Design</string>
+    <string name="skill_architecture">Clean Architecture</string>
+
+    <!-- Prayer Screen Strings -->
+    <string name="prayer_collection">Prayer Collection</string>
+    <string name="prayer_subtitle">Find peace and guidance through prayer</string>
+    <string name="daily_prayers">দৈনিক দোয়া</string>
+    <string name="liturgical_prayers">নামাজের দোয়া</string>
+
+    <!-- Prayer Card Strings -->
+    <string name="pronunciation">Pronunciation</string>
+    <string name="translation">Translation</string>
+    <string name="when_to_recite">When to Recite</string>
+    <string name="bookmark">Bookmark</string>
+
+    <!-- Common Prayer Times -->
+    <string name="morning_prayer">Morning Prayer</string>
+    <string name="evening_prayer">Evening Prayer</string>
+    <string name="before_meal">Before Meal</string>
+    <string name="after_meal">After Meal</string>
+    <string name="before_sleep">Before Sleep</string>
+    <string name="after_waking">After Waking</string>
+    <string name="before_travel">Before Travel</string>
+    <string name="after_travel">After Travel</string>
+    <string name="in_difficulty">In Times of Difficulty</string>
+    <string name="thanksgiving">Thanksgiving</string>
+    <string name="forgiveness">Seeking Forgiveness</string>
+    <string name="guidance">Seeking Guidance</string>
+
+    <!-- Prayer Categories -->
+    <string name="gratitude_prayers">Gratitude Prayers</string>
+    <string name="protection_prayers">Protection Prayers</string>
+    <string name="healing_prayers">Healing Prayers</string>
+    <string name="wisdom_prayers">Wisdom Prayers</string>
+    <string name="peace_prayers">Peace Prayers</string>
+
+    <!-- Generic Labels -->
+    <string name="anytime">Anytime</string>
+    <string name="unknown_source">Unknown Source</string>
+    <string name="traditional">Traditional</string>
+    <string name="scripture_based">Scripture Based</string>
+</resources>
