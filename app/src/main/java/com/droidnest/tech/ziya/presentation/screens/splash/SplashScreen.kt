@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,15 +31,15 @@ import com.droidnest.tech.ziya.R
 import com.droidnest.tech.ziya.presentation.navigation.Main
 import com.droidnest.tech.ziya.presentation.navigation.Welcome
 import com.droidnest.tech.ziya.presentation.screens.welcome.WelcomeViewModel
+import com.droidnest.tech.ziya.presentation.ui.theme.SharedViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun ZiyaSplashScreen(
     navController: NavHostController,
-    viewmodel: WelcomeViewModel = hiltViewModel()
+    viewmodel: SharedViewModel = hiltViewModel()
 ) {
-    val userName by viewmodel.userName.collectAsState()
-    val district by viewmodel.selectedDistrict.collectAsState()
+    val userName by viewmodel.name.collectAsState()
 
     // No animations, all values fixed to fully visible/static
     val logoScale = 1f
@@ -51,7 +52,7 @@ fun ZiyaSplashScreen(
     LaunchedEffect(Unit) {
         delay(1000) // Optional: keep splash visible for 1 sec
         navController.popBackStack()
-        if (userName != null && district != null) {
+        if (userName.isNotBlank()) {
             navController.navigate(Main.route)
         } else {
             navController.navigate(Welcome.route)

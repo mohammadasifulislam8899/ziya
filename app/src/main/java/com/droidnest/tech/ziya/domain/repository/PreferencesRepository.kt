@@ -9,4 +9,7 @@ interface PreferencesRepository {
     // নতুন: name সংরক্ষণের জন্য
     suspend fun saveUserName(name: String)
     fun getUserName(): Flow<String?>
+
+    suspend fun saveThemeMode(mode: String)
+    fun getThemeMode(): Flow<String?>
 }

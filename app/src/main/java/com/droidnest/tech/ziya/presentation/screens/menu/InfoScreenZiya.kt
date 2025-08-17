@@ -7,6 +7,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,7 +25,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,21 +36,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.text.font.FontFamily
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.droidnest.tech.ziya.presentation.ui.theme.NotoSerifBengali
-import com.droidnest.tech.ziya.presentation.ui.theme.LocalDimensions
 import com.droidnest.tech.ziya.presentation.ui.theme.LocalIslamicColors
 import com.droidnest.tech.ziya.R
+import com.droidnest.tech.ziya.presentation.screens.home.DivisionDistrictBottomSheet
+import com.droidnest.tech.ziya.presentation.ui.theme.Dimensions
+import com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors
+import com.droidnest.tech.ziya.presentation.ui.theme.SharedViewModel
+import com.droidnest.tech.ziya.presentation.ui.theme.getDimensions
+
 
 @Composable
 fun MenuScreen(
     onNavigateToPrivacyPolicy: () -> Unit,
-    onNavigateToDeveloperInfo: () -> Unit
+    onNavigateToDeveloperInfo: () -> Unit,
+    sharedViewModel: SharedViewModel = hiltViewModel()
 ) {
     // Access Islamic theme
-    val dimensions = LocalDimensions.current
+    val dimensions = getDimensions()
     val islamicColors = LocalIslamicColors.current
 
     var selectedInfo by remember { mutableStateOf<MenuInfo?>(null) }
+    var showSettingsDialog by remember {
+        mutableStateOf(false)
+    }
+    var showDistrictDialog by remember {
+        mutableStateOf(false)
+    }
+
+    // শুধু SharedViewModel থেকে userName নিন, local state নয়
+    val userName by sharedViewModel.name.collectAsState()
 
     Box(
         modifier = Modifier
@@ -84,6 +111,8 @@ fun MenuScreen(
                             MenuAction.SHOW_DIALOG -> selectedInfo = menuItem
                             MenuAction.PRIVACY_POLICY -> onNavigateToPrivacyPolicy()
                             MenuAction.DEVELOPER_INFO -> onNavigateToDeveloperInfo()
+                            MenuAction.SHOW_SETTINGS -> showSettingsDialog = true
+                            MenuAction.SHOW_DISTRICT -> showDistrictDialog = true
                         }
                     }
                 )
@@ -98,6 +127,30 @@ fun MenuScreen(
             }
         }
 
+        if (showSettingsDialog) {
+            ModernSettingsDialog(
+                name = userName, // Direct userName ব্যবহার করুন
+                onNameChange = { newName ->
+                    // Directly save to SharedViewModel
+                    sharedViewModel.saveName(newName)
+                },
+                onDismiss = { showSettingsDialog = false },
+                onSave = {
+                    showSettingsDialog = false
+                },
+                sharedViewModel = sharedViewModel,
+            )
+        }
+        if(showDistrictDialog){
+            DivisionDistrictBottomSheet(
+                onDismiss = { showDistrictDialog = false },
+                onDistrictSelected = {
+                    sharedViewModel.saveDistrict(it)
+                },
+            )
+        }
+
+
         // Islamic themed Dialog
         selectedInfo?.let { menuInfo ->
             IslamicModernDialog(
@@ -111,7 +164,7 @@ fun MenuScreen(
 }
 
 @Composable
-private fun IslamicAmbientBackground(islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors) {
+private fun IslamicAmbientBackground(islamicColors: IslamicColors) {
     val infiniteTransition = rememberInfiniteTransition(label = "islamic_ambient")
 
     // Islamic geometric floating elements
@@ -157,10 +210,12 @@ private fun IslamicAmbientBackground(islamicColors: com.droidnest.tech.ziya.pres
                                 islamicColors.primaryGreen.copy(alpha = 0.08f),
                                 Color.Transparent
                             )
+
                             1 -> listOf(
                                 islamicColors.accentGold.copy(alpha = 0.06f),
                                 Color.Transparent
                             )
+
                             else -> listOf(
                                 islamicColors.richMaroon.copy(alpha = 0.05f),
                                 Color.Transparent
@@ -176,8 +231,8 @@ private fun IslamicAmbientBackground(islamicColors: com.droidnest.tech.ziya.pres
 
 @Composable
 private fun IslamicHeroHeader(
-    islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors,
-    dimensions: com.droidnest.tech.ziya.presentation.ui.theme.Dimensions
+    islamicColors: IslamicColors,
+    dimensions: Dimensions
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -295,8 +350,8 @@ private fun IslamicHeroHeader(
 
 @Composable
 private fun MenuCardsSection(
-    islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors,
-    dimensions: com.droidnest.tech.ziya.presentation.ui.theme.Dimensions,
+    islamicColors: IslamicColors,
+    dimensions: Dimensions,
     onItemClick: (MenuInfo) -> Unit
 ) {
     val menuItems = getIslamicMenuItems(islamicColors)
@@ -320,8 +375,8 @@ private fun MenuCardsSection(
 private fun IslamicModernMenuCard(
     menuInfo: MenuInfo,
     modifier: Modifier = Modifier,
-    islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors,
-    dimensions: com.droidnest.tech.ziya.presentation.ui.theme.Dimensions,
+    islamicColors: IslamicColors,
+    dimensions: Dimensions,
     onClick: () -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
@@ -460,8 +515,8 @@ private fun IslamicModernMenuCard(
 
 @Composable
 private fun IslamicElegantFooter(
-    islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors,
-    dimensions: com.droidnest.tech.ziya.presentation.ui.theme.Dimensions
+    islamicColors: IslamicColors,
+    dimensions: Dimensions
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -526,8 +581,8 @@ private fun IslamicElegantFooter(
 @Composable
 private fun IslamicModernDialog(
     menuInfo: MenuInfo,
-    islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors,
-    dimensions: com.droidnest.tech.ziya.presentation.ui.theme.Dimensions,
+    islamicColors: IslamicColors,
+    dimensions: Dimensions,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
@@ -626,10 +681,12 @@ data class MenuInfo(
 enum class MenuAction {
     SHOW_DIALOG,
     PRIVACY_POLICY,
-    DEVELOPER_INFO
+    DEVELOPER_INFO,
+    SHOW_SETTINGS,
+    SHOW_DISTRICT
 }
 
-private fun getIslamicMenuItems(islamicColors: com.droidnest.tech.ziya.presentation.ui.theme.IslamicColors) = listOf(
+private fun getIslamicMenuItems(islamicColors: IslamicColors) = listOf(
     MenuInfo(
         title = "আমাদের উদ্দেশ্য",
         subtitle = "অ্যাপের লক্ষ্য ও ভিশন",
@@ -655,6 +712,22 @@ private fun getIslamicMenuItems(islamicColors: com.droidnest.tech.ziya.presentat
         action = MenuAction.DEVELOPER_INFO
     ),
     MenuInfo(
+        title = "সেটিংস",
+        subtitle = "সেটিংস্‌ পরিবর্তন করতে ক্লিক করুন",
+        description = "অ্যাপের সেটিংস",
+        icon = "⚙️️",
+        color = islamicColors.accentGold,
+        action = MenuAction.SHOW_SETTINGS
+    ),
+    MenuInfo(
+        title = "জেলা",
+        subtitle = "জেলা পরিবর্তন করতে ক্লিক করুন",
+        description = "আপনার জেলা",
+        icon = "🗺️",
+        color = islamicColors.accentGold,
+        action = MenuAction.SHOW_DISTRICT
+    ),
+    MenuInfo(
         title = "যোগাযোগ ও সহায়তা",
         subtitle = "আমাদের সাথে কথা বলুন",
         description = "আপনার কোনো প্রশ্ন, পরামর্শ বা সমস্যা থাকলে আমাদের সাথে যোগাযোগ করুন।\n\n📧 ইমেইল: droidnesttech@gmail.com\n🌐 ওয়েবসাইট: www.droidnest.tech\n📍 অবস্থান: চট্টগ্রাম, বাংলাদেশ\n\nআপনার মূল্যবান মতামত ও পরামর্শ আমাদের কাছে অত্যন্ত গুরুত্বপূর্ণ। আমরা ক্রমাগত আমাদের সেবার মান উন্নত করতে প্রতিশ্রুতিবদ্ধ।",
@@ -662,4 +735,316 @@ private fun getIslamicMenuItems(islamicColors: com.droidnest.tech.ziya.presentat
         color = islamicColors.accentGold,
         action = MenuAction.SHOW_DIALOG
     )
+)
+
+@Composable
+fun ModernSettingsDialog(
+    name: String,
+    onNameChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onSave: () -> Unit,
+    sharedViewModel: SharedViewModel,
+) {
+
+    // Local state for name editing
+    var localName by remember(name) { mutableStateOf(name) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {},
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = true,
+            dismissOnClickOutside = false
+        ),
+        modifier = Modifier
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.85f)
+            .padding(8.dp),
+        title = {
+            Column {
+                Text(
+                    text = "Settings",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "Customize your app experience",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 6.dp)
+                )
+            }
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 4.dp)
+            ) {
+                // Profile Section
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                    ),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(24.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = "Profile",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        OutlinedTextField(
+                            value = localName,
+                            onValueChange = { localName = it },
+                            label = {
+                                Text(
+                                    "Display Name",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            },
+                            placeholder = {
+                                Text(
+                                    "Enter your name",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Edit,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(64.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                            ),
+                            textStyle = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(28.dp))
+
+                // Theme Section
+                EnhancedThemeSelector(sharedViewModel = sharedViewModel)
+
+                Spacer(modifier = Modifier.height(36.dp))
+
+                // Buttons
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(52.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            "Cancel",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            // Save the name and close dialog
+                            onNameChange(localName)
+                            onSave()
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(52.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.Save,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            "Save",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun EnhancedThemeSelector(
+    sharedViewModel: SharedViewModel
+) {
+    val themeMode by sharedViewModel.themeMode.collectAsState()
+
+    val themeOptions = listOf(
+        ThemeOption("LIGHT", "Light", Icons.Default.LightMode, "Bright and clean"),
+        ThemeOption("DARK", "Dark", Icons.Default.DarkMode, "Easy on the eyes"),
+        ThemeOption("SYSTEM", "System", Icons.Default.PhoneAndroid, "Follow device setting")
+    )
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        ),
+        shape = RoundedCornerShape(20.dp) // Increased corner radius
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp) // Increased padding
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Palette,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp) // Increased icon size
+                )
+                Spacer(modifier = Modifier.width(16.dp)) // Increased spacing
+                Text(
+                    text = "Theme",
+                    style = MaterialTheme.typography.titleLarge, // Increased text size
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp)) // Increased spacing
+
+            themeOptions.forEach { option ->
+                ThemeOptionItem(
+                    option = option,
+                    isSelected = themeMode == option.key,
+                    onClick = { sharedViewModel.setTheme(option.key) }
+                )
+
+                if (option != themeOptions.last()) {
+                    Spacer(modifier = Modifier.height(12.dp)) // Increased spacing
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ThemeOptionItem(
+    option: ThemeOption,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
+        ),
+        border = if (isSelected) {
+            CardDefaults.outlinedCardBorder().copy(
+                width = 2.dp,
+                brush = SolidColor(MaterialTheme.colorScheme.primary)
+            )
+        } else null,
+        shape = RoundedCornerShape(16.dp), // Increased corner radius
+        elevation = if (isSelected) CardDefaults.cardElevation(4.dp) else CardDefaults.cardElevation(
+            0.dp
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp), // Increased padding
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = option.icon,
+                contentDescription = null,
+                tint = if (isSelected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = Modifier.size(28.dp) // Increased icon size
+            )
+
+            Spacer(modifier = Modifier.width(20.dp)) // Increased spacing
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = option.title,
+                    style = MaterialTheme.typography.bodyLarge, // Increased text size
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (isSelected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
+                )
+
+                Text(
+                    text = option.description,
+                    style = MaterialTheme.typography.bodyMedium, // Increased text size
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp) // Increased spacing
+                )
+            }
+
+            if (isSelected) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp) // Increased icon size
+                )
+            }
+        }
+    }
+}
+data class ThemeOption(
+    val key: String,
+    val title: String,
+    val icon: ImageVector,
+    val description: String
 )

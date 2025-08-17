@@ -1,7 +1,5 @@
 package com.droidnest.tech.ziya.presentation.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,10 +20,9 @@ import com.droidnest.tech.ziya.presentation.screens.tasbih.TasbihScreen
 import com.droidnest.tech.ziya.presentation.screens.welcome.WelcomeScreen
 import com.droidnest.tech.ziya.util.toScreenName
 
-@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun AppNavigation(
-    analyticsLogger: AnalyticsLogger = hiltViewModel<AnalyticsViewModel>().analyticsLogger,
+    analyticsLogger: AnalyticsLogger = hiltViewModel<AnalyticsViewModel>().analyticsLogger
 ) {
     val navController = rememberNavController()
 
@@ -65,7 +62,7 @@ fun AppNavigation(
         }
 
         composable(Main.route) {
-            MainScreenWithBottomNav(
+            MainScreen(
                 onNavigateToTasbih = {
                     analyticsLogger.logUserEngagement("navigation", "tasbih_clicked")
                     navController.navigate(Tasbih.route)

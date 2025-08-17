@@ -1,7 +1,6 @@
 package com.droidnest.tech.ziya.presentation.screens.dua
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -33,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.droidnest.tech.ziya.domain.model.Dua
 import com.droidnest.tech.ziya.presentation.ui.theme.*
 import com.droidnest.tech.ziya.R
+import com.droidnest.tech.ziya.util.BannerAdView
 
 @Composable
 fun DuaScreen(
@@ -76,32 +76,44 @@ fun DuaScreen(
                 color = islamicColors.primaryGreen.copy(alpha = 0.04f)
             )
         }
-
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Islamic themed header with improved tabs
-            IslamicTabRow(
-                selectedTab = selectedTab,
-                tabTitles = tabTitles,
-                islamicColors = islamicColors,
-                dimensions = dimensions,
-                onTabSelected = { selectedTab = it }
-            )
 
-            // Content with Islamic theme
-            when (selectedTab) {
-                0 -> DuaList(
-                    duas = dailyPrayers,
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                // Islamic themed header with improved tabs
+                IslamicTabRow(
+                    selectedTab = selectedTab,
+                    tabTitles = tabTitles,
                     islamicColors = islamicColors,
-                    dimensions = dimensions
+                    dimensions = dimensions,
+                    onTabSelected = { selectedTab = it }
                 )
-                1 -> DuaList(
-                    duas = namazDuas,
-                    islamicColors = islamicColors,
-                    dimensions = dimensions
-                )
+
+                // Content with Islamic theme
+                when (selectedTab) {
+                    0 -> DuaList(
+                        duas = dailyPrayers,
+                        islamicColors = islamicColors,
+                        dimensions = dimensions
+                    )
+
+                    1 -> DuaList(
+                        duas = namazDuas,
+                        islamicColors = islamicColors,
+                        dimensions = dimensions
+                    )
+                }
             }
+            // Banner ad bottom e
+            BannerAdView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
         }
     }
 }

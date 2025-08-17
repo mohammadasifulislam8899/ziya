@@ -24,8 +24,7 @@ class HomeViewModel @Inject constructor(
 
     private val _hadithList = MutableStateFlow<List<Hadith>>(emptyList())
     val hadithList = _hadithList.asStateFlow()
-    private val _name = MutableStateFlow("")
-    val name = _name.asStateFlow()
+
     val selectedDistrict = useCases.readDistrictUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -34,18 +33,13 @@ class HomeViewModel @Inject constructor(
     init {
         observeDistrict()
         loadHadithInInit()
-        loadNameInInit()
     }
     private fun loadHadithInInit() {
         viewModelScope.launch {
             loadHadith()
         }
     }
-    private fun loadNameInInit() {
-        viewModelScope.launch {
-            loadName()
-        }
-    }
+
     private fun observeDistrict() {
         viewModelScope.launch {
             selectedDistrict.collectLatest { district ->
@@ -65,16 +59,6 @@ class HomeViewModel @Inject constructor(
             loadHadith()
         }
     }
-    fun saveDistrict(district: String) {
-        viewModelScope.launch {
-            useCases.saveDistrictUseCase(district)
-        }
-    }
-    fun loadName() {
-        viewModelScope.launch {
-            useCases.readNameUseCase().collect { nameFromFlow ->
-                _name.value = nameFromFlow ?: ""
-            }
-        }
-    }
+
+
 }

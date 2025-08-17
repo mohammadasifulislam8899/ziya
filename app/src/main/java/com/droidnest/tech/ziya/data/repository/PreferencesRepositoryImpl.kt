@@ -24,4 +24,12 @@ class PreferencesRepositoryImpl(
     override fun getUserName(): Flow<String?> {
         return preferencesManager.getUserName()
     }
+
+    override suspend fun saveThemeMode(mode: String) {
+        return preferencesManager.saveThemeMode(mode)
+    }
+
+    override fun getThemeMode(): Flow<String?> {
+        return preferencesManager.getThemeMode()
+    }
 }

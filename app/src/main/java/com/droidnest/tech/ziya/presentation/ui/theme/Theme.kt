@@ -43,11 +43,11 @@ fun getDimensions(): Dimensions {
 
     return when {
         density < 2.0f -> Dimensions(
-            extraSmallText = 8.sp,
-            smallText = 10.sp,
-            mediumText = 12.sp,
-            largeText = 14.sp,
-            extraLargeText = 16.sp,
+            extraSmallText = 10.sp,
+            smallText = 12.sp,
+            mediumText = 14.sp,
+            largeText = 16.sp,
+            extraLargeText = 18.sp,
             extraSmallPadding = 2.dp,
             smallPadding = 4.dp,
             mediumPadding = 8.dp,
@@ -60,11 +60,11 @@ fun getDimensions(): Dimensions {
             largeIconSize = 20.dp
         )
         density < 3.0f -> Dimensions(
-            extraSmallText = 10.sp,
-            smallText = 12.sp,
-            mediumText = 14.sp,
-            largeText = 16.sp,
-            extraLargeText = 18.sp,
+            extraSmallText = 12.sp,
+            smallText = 14.sp,
+            mediumText = 16.sp,
+            largeText = 18.sp,
+            extraLargeText = 20.sp,
             extraSmallPadding = 4.dp,
             smallPadding = 8.dp,
             mediumPadding = 12.dp,

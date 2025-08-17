@@ -2,8 +2,10 @@ package com.droidnest.tech.ziya.domain.use_cases
 
 import com.droidnest.tech.ziya.domain.use_cases.datastore.GetNameUseCase
 import com.droidnest.tech.ziya.domain.use_cases.datastore.GetSelectedDistrictUseCase
+import com.droidnest.tech.ziya.domain.use_cases.datastore.GetThemeUseCase
 import com.droidnest.tech.ziya.domain.use_cases.datastore.SaveNameUseCase
 import com.droidnest.tech.ziya.domain.use_cases.datastore.SaveSelectedDistrictUseCase
+import com.droidnest.tech.ziya.domain.use_cases.datastore.SaveThemeUseCase
 import com.droidnest.tech.ziya.domain.use_cases.dua.GetDailyDuasUseCase
 import com.droidnest.tech.ziya.domain.use_cases.dua.GetNamazDuasUseCase
 import com.droidnest.tech.ziya.domain.use_cases.hadith.GetRandomHadithUseCase
@@ -20,6 +22,8 @@ data class ZiyaUseCases(
     val getRandomHadithUseCase: GetRandomHadithUseCase,
     val getSurahListUseCase: GetSurahListUseCase,
     val getSurahDetailsUseCase: GetSurahDetailsUseCase,
-    val getDailyDuasUseCase : GetDailyDuasUseCase,
-    val getNamazDuasUseCase : GetNamazDuasUseCase,
-    )
+    val getDailyDuasUseCase: GetDailyDuasUseCase,
+    val getNamazDuasUseCase: GetNamazDuasUseCase,
+    val saveThemeUseCase: SaveThemeUseCase,
+    val getThemeUseCase: GetThemeUseCase
+)

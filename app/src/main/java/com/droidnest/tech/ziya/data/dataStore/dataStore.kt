@@ -3,6 +3,7 @@ package com.droidnest.tech.ziya.data.dataStore
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -14,6 +15,7 @@ class PreferencesManager(private val context: Context) {
     companion object {
         val SELECTED_DISTRICT = stringPreferencesKey("selected_district")
         val USER_NAME = stringPreferencesKey("user_name")
+        val THEME_MODE = stringPreferencesKey("theme_mode") // "LIGHT", "DARK", "SYSTEM"
     }
 
     // Save selected district
@@ -30,6 +32,13 @@ class PreferencesManager(private val context: Context) {
         }
     }
 
+    // Save Theme Mode
+    suspend fun saveThemeMode(mode: String) {
+        context.dataStore.edit { preferences ->
+            preferences[THEME_MODE] = mode
+        }
+    }
+
     // Get selected district as Flow
     fun getSelectedDistrict(): Flow<String?> {
         return context.dataStore.data.map { preferences ->
@@ -41,6 +50,13 @@ class PreferencesManager(private val context: Context) {
     fun getUserName(): Flow<String?> {
         return context.dataStore.data.map { preferences ->
             preferences[USER_NAME]
+        }
+    }
+
+    // Get Theme Mode
+    fun getThemeMode(): Flow<String> {
+        return context.dataStore.data.map { preferences ->
+            preferences[THEME_MODE] ?: "SYSTEM"
         }
     }
 }
